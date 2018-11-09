@@ -35,18 +35,18 @@ public class SocialApplication {
 		SpringApplication.run(SocialApplication.class, args);
 	}
 	
-	@Bean
-	public RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder.build();
-	}
-	
-	@Bean
-	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
-		return args -> {
-			Person person = restTemplate.getForObject(
-					"https://api.linkedin.com/v1/people/~", Person.class);
-			log.info(person.toString());
-		};
-	}
+//	@Bean
+//	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+//		return builder.build();
+//	}
+//	
+//	@Bean
+//	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
+//		return args -> {
+//			Person person = restTemplate.getForObject(
+//					"https://api.linkedin.com/v1/people/~", Person.class);
+//			log.info(person.toString());
+//		};
+//	}
 
 }
