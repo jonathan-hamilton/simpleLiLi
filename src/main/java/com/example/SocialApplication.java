@@ -44,7 +44,7 @@ public class SocialApplication {
 	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
 		return args -> {
 			Person person = restTemplate.getForObject(
-					"http://gturnquist-quoters.cfapps.io/api/random", Person.class);
+					"https://api.linkedin.com/v1/people/~", Person.class);
 			log.info(person.toString());
 		};
 	}
