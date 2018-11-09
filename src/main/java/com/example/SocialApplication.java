@@ -44,8 +44,7 @@ public class SocialApplication {
 	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
 		return args -> {
 			Person person = restTemplate.getForObject(
-					"https://api.linkedin.com/v1/people", Person.class);
-//					"https://api.linkedin.com/v1/people/~", Person.class);
+					"https://api.linkedin.com/v1/people/~", Person.class);
 			log.info(person.toString());
 		};
 	}
