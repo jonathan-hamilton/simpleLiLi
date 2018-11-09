@@ -15,16 +15,38 @@
  */
 package com.example;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableOAuth2Sso
 public class SocialApplication {
+	
+	private static final Logger log = LoggerFactory.getLogger(SocialApplication.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(SocialApplication.class, args);
+	}
+	
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
+	}
+	
+	@Bean
+	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
+		return args -> {
+			Person person = restTemplate.getForObject(
+					"http://gturnquist-quoters.cfapps.io/api/random", Person.class);
+			log.info(person.toString());
+		};
 	}
 
 }
