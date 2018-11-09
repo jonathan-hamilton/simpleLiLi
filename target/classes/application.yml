@@ -8,5 +8,5 @@ security:
       tokenName: oauth_token
       authenticationScheme: query
       clientAuthenticationScheme: form
-#    resource:
-#      userInfoUri: https://api.linkedin.com/v1/people/~?format=json
+    resource:
+      userInfoUri: https://api.linkedin.com/v1/people/~?format=json
