@@ -26,6 +26,9 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.OAuth2ClientContext;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +36,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-@EnableOAuth2Sso
-//@EnableOAuth2Client
+//@EnableOAuth2Sso
+@EnableOAuth2Client
 @RestController
 public class SocialApplication {
 	
@@ -42,6 +45,12 @@ public class SocialApplication {
 	
 	public static void main (String[] args) throws Exception {
 		SpringApplication.run(SocialApplication.class, args);
+	}
+	
+	@Bean
+	public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
+	        OAuth2ProtectedResourceDetails details) {
+	    return new OAuth2RestTemplate(details, oauth2ClientContext);
 	}
 	
 //	@Bean
