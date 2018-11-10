@@ -63,6 +63,11 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	      .anyRequest()
 	        .authenticated();
 	  }
+	  
+	  @RequestMapping("/user")
+	  public Principal user(Principal principal) {
+	    return principal;
+	  }
 	
 //	@Bean
 //	public RestTemplate restTemplate(RestTemplateBuilder builder) {
