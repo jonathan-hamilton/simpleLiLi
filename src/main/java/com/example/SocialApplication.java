@@ -43,6 +43,11 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	
 	private static final Logger log = LoggerFactory.getLogger(SocialApplication.class);
 	
+	  @RequestMapping("/user")
+	  public Principal user(Principal principal) {
+	    return principal;
+	  }
+	
 	public static void main (String[] args) throws Exception {
 		SpringApplication.run(SocialApplication.class, args);
 	}
@@ -64,10 +69,6 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	        .authenticated();
 	  }
 	  
-	  @RequestMapping("/user")
-	  public Principal user(Principal principal) {
-	    return principal;
-	  }
 	
 //	@Bean
 //	public RestTemplate restTemplate(RestTemplateBuilder builder) {
