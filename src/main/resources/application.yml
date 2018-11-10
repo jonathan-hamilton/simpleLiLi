@@ -10,3 +10,5 @@ security:
 #      clientAuthenticationScheme: form
     resource:
       userInfoUri: https://api.linkedin.com/v1/people/~?format=json
+server:
+  port:3000
