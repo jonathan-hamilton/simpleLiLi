@@ -1,63 +1,115 @@
-/*
- * Copyright 2012-2015 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.example;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.Filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.trace.http.HttpTrace.Principal;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
+import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
+import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.filter.CompositeFilter;
 
 @SpringBootApplication
 @EnableOAuth2Sso
-//@EnableOAuth2Client
 @RestController
 public class SocialApplication extends WebSecurityConfigurerAdapter{
 	
 	private static final Logger log = LoggerFactory.getLogger(SocialApplication.class);
 	
-	  @RequestMapping("/user")
-	  public Principal user(Principal principal) {
-	    return principal;
-	  }
+	 @Autowired
+	 OAuth2ClientContext oauth2ClientContext;
 	
 	public static void main (String[] args) throws Exception {
 		SpringApplication.run(SocialApplication.class, args);
 	}
 	
-	@Bean
-	public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
-	        OAuth2ProtectedResourceDetails details) {
-	    return new OAuth2RestTemplate(details, oauth2ClientContext);
-	}
+	  @RequestMapping("/user")
+	  public Principal user(Principal principal) {
+	    return principal;
+	  }
+	  
+	  // @formatter:off
+	  @Override
+	  protected void configure(HttpSecurity http) throws Exception {
+	  http.antMatcher("/**")
+	  .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
+	  .authorizeRequests()
+	  .antMatchers("/", "/connect**", "/webjars/**")
+	  .permitAll()
+	  .anyRequest()
+	  .authenticated()
+	  .and()
+	  .logout()
+	      .logoutSuccessUrl("/").permitAll().and().csrf()
+	  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+	  }
+	  // @formatter:on
+	  
+	  private Filter ssoFilter() {
+		  
+		  CompositeFilter filter = new CompositeFilter();
+		  List filters = new ArrayList<>();
+		  
+		  OAuth2ClientAuthenticationProcessingFilter linkedInFilter = new OAuth2ClientAuthenticationProcessingFilter(
+				  "/connect/linkedIn");
+				  OAuth2RestTemplate linkedInTemplate = new OAuth2RestTemplate(linkedIn(), oauth2ClientContext);
+				  linkedInFilter.setRestTemplate(linkedInTemplate);
+				  UserInfoTokenServices tokenServices = new UserInfoTokenServices(linkedInResource().getUserInfoUri(), linkedIn().getClientId());
+				  tokenServices.setRestTemplate(linkedInTemplate);
+				  linkedInFilter.setTokenServices(tokenServices);
+				  
+				  filters.add(linkedInFilter);
+				  
+				  filter.setFilters(filters);
+				  return filter;
+	  }
+	  
+	  @Bean
+	  public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
+	  FilterRegistrationBean registration = new FilterRegistrationBean();
+	  registration.setFilter(filter);
+	  registration.setOrder(-100);
+	  return registration;
+	  }
+	  
+	  @Bean
+	  @ConfigurationProperties("linkedIn.client")
+	  public AuthorizationCodeResourceDetails linkedIn() {
+	  return new AuthorizationCodeResourceDetails();
+	  }
+	  
+	  @Bean
+	  @ConfigurationProperties("linkedIn.resource")
+	  public ResourceServerProperties linkedInResource() {
+	  return new ResourceServerProperties();
+	  }
+	
+//	@Bean
+//	public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
+//	        OAuth2ProtectedResourceDetails details) {
+//	    return new OAuth2RestTemplate(details, oauth2ClientContext);
+//	}
 //	
 //	  @Override
 //	  protected void configure(HttpSecurity http) throws Exception {
