@@ -27,8 +27,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-//@EnableOAuth2Sso
-@EnableOAuth2Client
+@EnableOAuth2Sso
+//@EnableOAuth2Client
 public class SocialApplication {
 	
 	private static final Logger log = LoggerFactory.getLogger(SocialApplication.class);
