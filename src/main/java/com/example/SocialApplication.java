@@ -39,7 +39,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableOAuth2Sso
 //@EnableOAuth2Client
 @RestController
-public class SocialApplication{
+public class SocialApplication extends WebSecurityConfigurerAdapter{
 	
 	private static final Logger log = LoggerFactory.getLogger(SocialApplication.class);
 	
@@ -53,6 +53,16 @@ public class SocialApplication{
 	    return new OAuth2RestTemplate(details, oauth2ClientContext);
 	}
 	
+	  @Override
+	  protected void configure(HttpSecurity http) throws Exception {
+	    http
+	      .antMatcher("/**")
+	      .authorizeRequests()
+	        .antMatchers("/", "/login**", "/webjars/**", "/error**")
+	        .permitAll()
+	      .anyRequest()
+	        .authenticated();
+	  }
 	
 //	@Bean
 //	public RestTemplate restTemplate(RestTemplateBuilder builder) {
