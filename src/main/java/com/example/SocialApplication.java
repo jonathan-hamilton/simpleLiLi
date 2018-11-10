@@ -38,8 +38,10 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	
 	private static final Logger log = LoggerFactory.getLogger(SocialApplication.class);
 	
-	 @Autowired
-	 OAuth2ClientContext oauth2ClientContext;
+	@Autowired
+	OAuth2ClientContext oauth2ClientContext;
+	 
+	public SocialApplication() {}
 	
 	public static void main (String[] args) throws Exception {
 		SpringApplication.run(SocialApplication.class, args);
