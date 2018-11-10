@@ -64,10 +64,12 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	      .antMatcher("/**")
 	      .authorizeRequests()
 	        .antMatchers("/", "/login**", "/webjars/**", "/error**")
-	        .permitAll()
+	        .and().logout().logoutSuccessUrl("/").permitAll()
+		    .and().csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 	      .anyRequest()
 	        .authenticated();
 	  }
+	
 	  
 	
 //	@Bean
