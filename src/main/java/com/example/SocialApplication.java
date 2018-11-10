@@ -36,10 +36,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-//@EnableOAuth2Sso
-@EnableOAuth2Client
+@EnableOAuth2Sso
+//@EnableOAuth2Client
 @RestController
-public class SocialApplication {
+public class SocialApplication{
 	
 	private static final Logger log = LoggerFactory.getLogger(SocialApplication.class);
 	
@@ -52,6 +52,7 @@ public class SocialApplication {
 	        OAuth2ProtectedResourceDetails details) {
 	    return new OAuth2RestTemplate(details, oauth2ClientContext);
 	}
+	
 	
 //	@Bean
 //	public RestTemplate restTemplate(RestTemplateBuilder builder) {
