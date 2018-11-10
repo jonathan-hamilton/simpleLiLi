@@ -34,13 +34,13 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableOAuth2Sso
-@EnableOAuth2Client
+//@EnableOAuth2Client
 @RestController
-public class SocialApplication{
+public class SocialApplication {
 	
 	private static final Logger log = LoggerFactory.getLogger(SocialApplication.class);
-
-	public static void main(String[] args) {
+	
+	public static void main (String[] args) throws Exception {
 		SpringApplication.run(SocialApplication.class, args);
 	}
 	
