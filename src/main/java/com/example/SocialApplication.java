@@ -40,8 +40,6 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	OAuth2ClientContext oauth2ClientContext;
-	 
-	public SocialApplication() {}
 	
 	public static void main (String[] args) throws Exception {
 		SpringApplication.run(SocialApplication.class, args);
@@ -96,7 +94,6 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	  return registration;
 	  }
 	  
-	  @Primary
 	  @Bean
 	  @ConfigurationProperties("linkedIn.client")
 	  public AuthorizationCodeResourceDetails linkedIn() {
