@@ -56,7 +56,7 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	  http.antMatcher("/**")
 	  .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
 	  .authorizeRequests()
-	  .antMatchers("/", "/connect**", "/webjars/**")
+	  .antMatchers("/", "/login",  "/connect**", "/webjars/**")
 	  .permitAll()
 	  .anyRequest()
 	  .authenticated()
