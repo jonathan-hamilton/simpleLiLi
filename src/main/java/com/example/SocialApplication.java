@@ -70,15 +70,15 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	  private Filter ssoFilter() {
 		  
 		  CompositeFilter filter = new CompositeFilter();
-		  List filters = new ArrayList<>();
+		  List<Filter> filters = new ArrayList<>();
 		  
 		  OAuth2ClientAuthenticationProcessingFilter linkedInFilter = new OAuth2ClientAuthenticationProcessingFilter(
 				  "/connect/linkedIn");
-				  OAuth2RestTemplate linkedInTemplate = new OAuth2RestTemplate(linkedIn(), oauth2ClientContext);
-				  linkedInFilter.setRestTemplate(linkedInTemplate);
-				  UserInfoTokenServices tokenServices = new UserInfoTokenServices(linkedInResource().getUserInfoUri(), linkedIn().getClientId());
-				  tokenServices.setRestTemplate(linkedInTemplate);
-				  linkedInFilter.setTokenServices(tokenServices);
+		  OAuth2RestTemplate linkedInTemplate = new OAuth2RestTemplate(linkedIn(), oauth2ClientContext);
+		  linkedInFilter.setRestTemplate(linkedInTemplate);
+		  UserInfoTokenServices tokenServices = new UserInfoTokenServices(linkedInResource().getUserInfoUri(), linkedIn().getClientId());
+		  tokenServices.setRestTemplate(linkedInTemplate);
+		  linkedInFilter.setTokenServices(tokenServices);
 				  
 				  filters.add(linkedInFilter);
 				  
