@@ -101,6 +101,7 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	  }
 	  
 	  @Bean
+	  @Primary
 	  @ConfigurationProperties("linkedIn.resource")
 	  public ResourceServerProperties linkedInResource() {
 	  return new ResourceServerProperties();
