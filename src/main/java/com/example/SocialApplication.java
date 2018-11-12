@@ -95,7 +95,7 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	  }
 	  
 	  @Bean
-	  @ConfigurationProperties("linkedIn.client")
+	  @ConfigurationProperties("linked-in-client")
 	  public AuthorizationCodeResourceDetails linkedIn() {
 	  return new AuthorizationCodeResourceDetails();
 	  }
