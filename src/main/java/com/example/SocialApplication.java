@@ -47,23 +47,23 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	
 	  @RequestMapping("/user")
 	  public Principal user(Principal principal) {
-	    return principal;
+		  return principal;
 	  }
 	  
 	  // @formatter:off
 	  @Override
 	  protected void configure(HttpSecurity http) throws Exception {
-	  http.antMatcher("/**")
-	  .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
-	  .authorizeRequests()
-	  .antMatchers("/", "/login",  "/connect**", "/webjars/**")
-	  .permitAll()
-	  .anyRequest()
-	  .authenticated()
-	  .and()
-	  .logout()
-	      .logoutSuccessUrl("/").permitAll().and().csrf()
-	  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+		  http.antMatcher("/**")
+			  .addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
+			  .authorizeRequests()
+			  .antMatchers("/", "/login",  "/connect**", "/webjars/**")
+			  .permitAll()
+			  .anyRequest()
+			  .authenticated()
+			  .and()
+			  .logout()
+			  .logoutSuccessUrl("/").permitAll().and().csrf()
+			  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 	  }
 	  // @formatter:on
 	  
@@ -88,23 +88,23 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 	  
 	  @Bean
 	  public FilterRegistrationBean oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
-	  FilterRegistrationBean registration = new FilterRegistrationBean();
-	  registration.setFilter(filter);
-	  registration.setOrder(-100);
-	  return registration;
+		  FilterRegistrationBean registration = new FilterRegistrationBean();
+		  registration.setFilter(filter);
+		  registration.setOrder(-100);
+		  return registration;
 	  }
 	  
 	  @Bean
 	  @ConfigurationProperties("linked-in-client")
 	  public AuthorizationCodeResourceDetails linkedIn() {
-	  return new AuthorizationCodeResourceDetails();
+		  return new AuthorizationCodeResourceDetails();
 	  }
 	  
 	  @Bean
 	  @Primary
 	  @ConfigurationProperties("linked-in-resource")
-	  public ResourceServerProperties linkedInResource() {
-	  return new ResourceServerProperties();
+		  public ResourceServerProperties linkedInResource() {
+		  return new ResourceServerProperties();
 	  }
 	
 //	@Bean
