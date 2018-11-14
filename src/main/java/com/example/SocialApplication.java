@@ -62,8 +62,6 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 			  .anyRequest()
 			  .authenticated()
 			  .and()
-//			  .oauth2Login()
-//			  .loginPage("oauth2_login");
 			  .logout()			  
 			  .logoutSuccessUrl("/").permitAll().and().csrf()
 			  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
