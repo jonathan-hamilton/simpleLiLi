@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -61,7 +62,9 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 			  .anyRequest()
 			  .authenticated()
 			  .and()
-			  .logout()
+//			  .oauth2Login()
+//			  .loginPage("oauth2_login");
+			  .logout()			  
 			  .logoutSuccessUrl("/").permitAll().and().csrf()
 			  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 	  }
@@ -107,12 +110,12 @@ public class SocialApplication extends WebSecurityConfigurerAdapter{
 		  return new ResourceServerProperties();
 	  }
 	
-//	@Bean
-//	public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
-//	        OAuth2ProtectedResourceDetails details) {
-//	    return new OAuth2RestTemplate(details, oauth2ClientContext);
-//	}
-//	
+	  @Bean
+	  public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
+	      OAuth2ProtectedResourceDetails details) {
+		  return new OAuth2RestTemplate(details, oauth2ClientContext);
+	}
+	
 //	  @Override
 //	  protected void configure(HttpSecurity http) throws Exception {
 //	    http
